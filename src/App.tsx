@@ -1,9 +1,22 @@
+import {
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+} from "react-router-dom";
+import Registration from "./pages/Registration";
+import Login from "./pages/Login";
+
 function App() {
-  return (
-    <>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    </>
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <>
+        <Route path="/signup" element={<Registration />} />
+        <Route path="/login" element={<Login />} />
+      </>
+    )
   );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
