@@ -1,9 +1,27 @@
-import Button from "../components/Button";
+import { useState } from "react";
+import { signUp } from "../auth";
+// import Button from "../components/Button";
 import Card from "../components/Card";
-import FormLabel from "../components/FormLabel";
-import InputField from "../components/InputField";
+// import FormLabel from "../components/FormLabel";
+// import InputField from "../components/InputField";
+import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await signUp(email, password);
+      alert("Sign Up Successful! ✅");
+      navigate("/login");
+    } catch (err) {
+      setError("Error signing up. Please try again.");
+    }
+  };
+
   return (
     <div className="w-full h-full">
       <div className="w-6xl mx-auto">
@@ -70,11 +88,39 @@ const Registration = () => {
           </h1>
 
           <Card className="mt-6 w-[400px] ">
-            <FormLabel htmlFor="email">Email</FormLabel>
-            <InputField id="email" />
-            <FormLabel htmlFor="password">Password</FormLabel>
-            <InputField id="password" />
-            <Button className="py-3">Agree & Join</Button>
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            <form onSubmit={handleSignUp}>
+              {/* <FormLabel htmlFor="email">Email</FormLabel>
+              <InputField id="email" />
+              <FormLabel htmlFor="password">Password</FormLabel>
+              <InputField id="password" />
+              <Button className="py-3">Agree & Join</Button> */}
+
+              <label htmlFor="email" className="font-semibold text-sm mb-1">
+                Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                id="email"
+                className="border rounded-md px-3 py-1 mb-4"
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+              />
+
+              <label htmlFor="password" className="font-semibold text-sm mb-1">
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                id="password"
+                className="border rounded-md px-3 py-1 mb-4"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+              />
+              <button type="submit">Sign Up</button>
+            </form>
           </Card>
         </div>
       </div>

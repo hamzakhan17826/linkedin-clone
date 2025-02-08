@@ -1,1 +1,1 @@
-Using Typescript, clsx, react-router-dom, tailwind
+Using tailwind, Typescript, firebase, clsx, react-router-dom,

@@ -1,9 +1,27 @@
-import Button from "../components/Button";
+import { useState } from "react";
+// import Button from "../components/Button";
 import Card from "../components/Card";
-import FormLabel from "../components/FormLabel";
-import InputField from "../components/InputField";
+// import FormLabel from "../components/FormLabel";
+// import InputField from "../components/InputField";
+import { login } from "../auth";
+import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await login(email, password);
+      alert("Login Successful! ✅");
+      navigate("/");
+    } catch (err) {
+      setError("Invalid email or password.");
+    }
+  };
   return (
     <div className="w-full h-full">
       <div className="w-6xl mx-auto">
@@ -66,11 +84,39 @@ const Registration = () => {
         </div>
         <div className="flex items-center flex-col">
           <Card className="mt-6 w-[400px] ">
-            <FormLabel htmlFor="email">Email</FormLabel>
+            {/* <FormLabel htmlFor="email">Email</FormLabel>
             <InputField id="email" />
             <FormLabel htmlFor="password">Password</FormLabel>
             <InputField id="password" />
-            <Button className="py-3">Sign in</Button>
+            <Button className="py-3">Sign in</Button> */}
+
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            <form onSubmit={handleLogin}>
+              <label htmlFor="email" className="font-semibold text-sm mb-1">
+                Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                id="email"
+                className="border rounded-md px-3 py-1 mb-4"
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+              />
+
+              <label htmlFor="password" className="font-semibold text-sm mb-1">
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                id="password"
+                className="border rounded-md px-3 py-1 mb-4"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+              />
+              <button type="submit">Sign In</button>
+            </form>
           </Card>
         </div>
       </div>
