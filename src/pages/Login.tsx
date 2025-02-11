@@ -1,8 +1,8 @@
 import { useState } from "react";
-// import Button from "../components/Button";
+import Button from "../components/Button";
 import Card from "../components/Card";
-// import FormLabel from "../components/FormLabel";
-// import InputField from "../components/InputField";
+import FormLabel from "../components/FormLabel";
+import InputField from "../components/InputField";
 import { login } from "../auth";
 import { useNavigate } from "react-router-dom";
 
@@ -18,8 +18,8 @@ const Registration = () => {
       await login(email, password);
       alert("Login Successful! ✅");
       navigate("/");
-    } catch (err) {
-      setError("Invalid email or password.");
+    } catch (err: any) {
+      setError(err.message || "Invalid email or password.");
     }
   };
   return (
@@ -39,9 +39,9 @@ const Registration = () => {
             <g
               className="inbug"
               stroke="none"
-              stroke-width="1"
+              strokeWidth="1"
               fill="none"
-              fill-rule="evenodd"
+              fillRule="evenodd"
             >
               <path
                 d="M19.479,0 L1.583,0 C0.727,0 0,0.677 0,1.511 L0,19.488 C0,20.323 0.477,21 1.333,21 L19.229,21 C20.086,21 21,20.323 21,19.488 L21,1.511 C21,0.677 20.336,0 19.479,0"
@@ -84,38 +84,31 @@ const Registration = () => {
         </div>
         <div className="flex items-center flex-col">
           <Card className="mt-6 w-[400px] ">
-            {/* <FormLabel htmlFor="email">Email</FormLabel>
-            <InputField id="email" />
-            <FormLabel htmlFor="password">Password</FormLabel>
-            <InputField id="password" />
-            <Button className="py-3">Sign in</Button> */}
-
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
             <form onSubmit={handleLogin}>
-              <label htmlFor="email" className="font-semibold text-sm mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                id="email"
-                className="border rounded-md px-3 py-1 mb-4"
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
-              />
-
-              <label htmlFor="password" className="font-semibold text-sm mb-1">
-                Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                id="password"
-                className="border rounded-md px-3 py-1 mb-4"
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-              />
-              <button type="submit">Sign In</button>
+              <div className="flex flex-col">
+                <FormLabel htmlFor="email">Email</FormLabel>
+                <InputField
+                  id="email"
+                  type="email"
+                  value={email}
+                  placeholder="Enter email"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col">
+                <FormLabel htmlFor="password">Password</FormLabel>
+                <InputField
+                  id="password"
+                  type="password"
+                  value={password}
+                  placeholder="Enter password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <Button className="py-3" type="submit">
+                Sign in
+              </Button>
             </form>
           </Card>
         </div>

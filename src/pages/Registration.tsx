@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { signUp } from "../auth";
-// import Button from "../components/Button";
+import Button from "../components/Button";
 import Card from "../components/Card";
-// import FormLabel from "../components/FormLabel";
-// import InputField from "../components/InputField";
+import FormLabel from "../components/FormLabel";
+import InputField from "../components/InputField";
 import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
@@ -11,14 +11,24 @@ const Registration = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email || !password) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return;
+    }
     try {
       await signUp(email, password);
       alert("Sign Up Successful! ✅");
       navigate("/login");
-    } catch (err) {
-      setError("Error signing up. Please try again.");
+    } catch (err: any) {
+      setError(err.message || "Error signing up. Please try again.");
     }
   };
 
@@ -39,9 +49,9 @@ const Registration = () => {
             <g
               className="inbug"
               stroke="none"
-              stroke-width="1"
+              strokeWidth="1"
               fill="none"
-              fill-rule="evenodd"
+              fillRule="evenodd"
             >
               <path
                 d="M19.479,0 L1.583,0 C0.727,0 0,0.677 0,1.511 L0,19.488 C0,20.323 0.477,21 1.333,21 L19.229,21 C20.086,21 21,20.323 21,19.488 L21,1.511 C21,0.677 20.336,0 19.479,0"
@@ -87,40 +97,39 @@ const Registration = () => {
             Make the most of your professional life
           </h1>
 
-          <Card className="mt-6 w-[400px] ">
-            {error && <p style={{ color: "red" }}>{error}</p>}
+          <Card className="mt-6 w-[400px]">
+            {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
             <form onSubmit={handleSignUp}>
-              {/* <FormLabel htmlFor="email">Email</FormLabel>
-              <InputField id="email" />
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <InputField id="password" />
-              <Button className="py-3">Agree & Join</Button> */}
-
-              <label htmlFor="email" className="font-semibold text-sm mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                id="email"
-                className="border rounded-md px-3 py-1 mb-4"
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
-              />
-
-              <label htmlFor="password" className="font-semibold text-sm mb-1">
-                Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                id="password"
-                className="border rounded-md px-3 py-1 mb-4"
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-              />
-              <button type="submit">Sign Up</button>
+              <div className="flex flex-col">
+                <FormLabel htmlFor="email">Email</FormLabel>
+                <InputField
+                  id="email"
+                  type="email"
+                  value={email}
+                  placeholder="Enter email"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col">
+                <FormLabel htmlFor="password">Password</FormLabel>
+                <InputField
+                  id="password"
+                  type="password"
+                  value={password}
+                  placeholder="Enter password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <Button className="py-3" type="submit">
+                Agree & Join
+              </Button>
             </form>
+            <p className="text-sm mt-4">
+              Already have an account?{" "}
+              <a href="/login" className="text-blue-600 hover:underline">
+                Sign in
+              </a>
+            </p>
           </Card>
         </div>
       </div>
